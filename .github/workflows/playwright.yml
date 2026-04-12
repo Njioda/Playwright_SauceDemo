@@ -20,19 +20,22 @@ jobs:
         with:
           python-version: "3.11"
 
-      # 📦 Dependencies installieren
+      # 📦 Dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 🎭 Playwright installieren (WICHTIG!)
+      # 🎭 Playwright Browser
       - name: Install Playwright
         run: |
           playwright install --with-deps
 
-      # 🧪 Tests ausführen
+      # 🔥 FIX IMPORT PROBLEM
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+      # 🧪 Run tests (CI SAFE)
       - name: Run tests
         run: |
-          pytest tests/test_cart.py --headed --slowmo 800                                                                     
-          
+          python -m pytest -v --html=report.html --self-contained-html
