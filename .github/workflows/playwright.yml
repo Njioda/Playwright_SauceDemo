@@ -27,9 +27,16 @@ jobs:
         run: |
           playwright install --with-deps
 
-      # 🔥 WICHTIGER FIX
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
-
+      # ✅ Cleaner als extra Step
       - name: Run tests
         run: python -m pytest -v --html=report.html --self-contained-html
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+
+      # ✅ NEU: HTML Report speichern
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        if: always()   # auch bei Fehlern speichern!
+        with:
+          name: pytest-report
+          path: report.html
