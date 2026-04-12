@@ -34,5 +34,5 @@ jobs:
       # 🧪 Tests ausführen
       - name: Run tests
         run: |
-          pytest --html=report.html --self-contained-html                                                                       
+          pytest -m pytest                                                                       
           
