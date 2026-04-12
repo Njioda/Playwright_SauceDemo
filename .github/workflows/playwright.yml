@@ -34,5 +34,5 @@ jobs:
       # 🧪 Tests ausführen
       - name: Run tests
         run: |
-          pytest .\tests\test_cart.py --headed --slowmo 800                                                                      
+          pytest tests/test_cart.py --headed --slowmo 800                                                                     
           
