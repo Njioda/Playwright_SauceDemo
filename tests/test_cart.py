@@ -1,6 +1,6 @@
-from page.login_page import LoginPage
-from page.inventory_page import InventoryPage
-from page.cart_page import CartPage
+from pages.login_page import LoginPage
+from pages.inventory_page import InventoryPage
+from pages.cart_page import CartPage
 from playwright.sync_api import sync_playwright
 
 

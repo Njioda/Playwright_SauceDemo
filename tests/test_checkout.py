@@ -1,7 +1,7 @@
-from page.login_page import LoginPage
-from page.inventory_page import InventoryPage
-from page.cart_page import CartPage
-from page.checkout_page import CheckoutPage
+from pages.login_page import LoginPage
+from pages.inventory_page import InventoryPage
+from pages.cart_page import CartPage
+from pages.checkout_page import CheckoutPage
 
 
 def test_checkout_flow(page):

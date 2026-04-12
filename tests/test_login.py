@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright
-from page.login_page import LoginPage
-from page.inventory_page import InventoryPage
+from pages.login_page import LoginPage
+from pages.inventory_page import InventoryPage
 
 
 def test_login_and_inventory_validation(page):
