@@ -2,41 +2,41 @@ name: Playwright Python Tests
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
+    branches: [ main ]      # Workflow läuft bei Push auf den main-Branch
+  pull_request:             # Workflow läuft auch bei Pull Requests
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Nutzt eine Ubuntu-Umgebung
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4      # Holt den Code aus dem Repository
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.11"        # Installiert Python 3.11
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip   
           pip install -r requirements.txt
 
       - name: Install Playwright
         run: |
           playwright install --with-deps
 
-      # ✅ Cleaner als extra Step
+      
       - name: Run tests
         run: python -m pytest -v --html=report.html --self-contained-html
         env:
-          PYTHONPATH: ${{ github.workspace }}
+          PYTHONPATH: ${{ github.workspace }}  # Setzt den Projektpfad für Imports
 
-      # ✅ NEU: HTML Report speichern
+      # HTML-Testbericht wird gespeichert (auch bei Fehlern!)
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
-        if: always()   # auch bei Fehlern speichern!
+        if: always()   # auch bei Fehlern speichern!  Führt diesen Schritt immer aus!
         with:
-          name: pytest-report
-          path: report.html
+          name: pytest-report    # Name des Artefakts
+          path: report.html      # Pfad zur Report-Datei

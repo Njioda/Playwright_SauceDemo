@@ -5,17 +5,35 @@ from pages.inventory_page import InventoryPage
 
 def test_login_and_inventory_validation(page):
     
-
+        # =========================================
+        # Vorbedingung
+        # =========================================
+        
+        # LoginPage Objekt erstellen (Page Object Model)
         login_page = LoginPage(page)
-        # Open page
+        
+        # =========================================
+        #  Aktion
+        # =========================================
+        
+        # Öffnen der Login-Seite
         login_page.navigate()
 
-        # Login
+        # Eingabe gültiger Login-Daten
         login_page.login("standard_user", "secret_sauce")
         
-        # Warten bis Navigation fertig
+        # Warten bis die Inventory-Seite vollständig geladen ist
         page.wait_for_url("**/inventory.html")
+        
+        # =========================================
+        # Erwartung / Validierung
+        # =========================================
 
-        # Jetzt prüfen
+        # Prüfen, ob Inventory-Seite korrekt geladen wurde
         login_page.wait_until_loaded()
+        
+        # Validierung: Login war erfolgreich
         assert login_page.is_loaded()
+        
+        
+        
