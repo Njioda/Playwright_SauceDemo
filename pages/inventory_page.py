@@ -65,7 +65,7 @@ class InventoryPage:
         for i in range(count):
             item = self.items.nth(i)
 
-            # 🔹 Produktname prüfen
+            # Produktname prüfen
             name_locator = item.locator('[data-test="inventory-item-name"]')
             expect(name_locator).to_be_visible()
 

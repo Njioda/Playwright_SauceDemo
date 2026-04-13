@@ -1,58 +1,74 @@
 from playwright.sync_api import Page
 
+
 class LoginPage:
+    # ==========================================
+    # Initialisierung der LoginPage
+    # ==========================================
     def __init__(self, page: Page):
-        
-         # ================================
-         #  Vorbedingung 
-         # ================================
-        
-        # Übergabe des Playwright Page-Objekts
-        # Dieses Objekt wird für alle Interaktionen mit der Webseite verwendet
+        # Playwright Page-Objekt wird übergeben
+        # Damit werden alle Interaktionen mit der Webseite gesteuert
         self.page = page
-        
-        # Lokatoren für die Login-Elemente definieren
-        # Eingabefeld für Benutzername 
+
+        # =========================
+        # Locator (UI-Elemente)
+        # =========================
+
+        # Eingabefeld für Benutzername
         self.username_input = page.get_by_placeholder("Username")
+
         # Eingabefeld für Passwort
         self.password_input = page.get_by_placeholder("Password")
+
         # Login-Button
         self.login_button = page.get_by_role("button", name="Login")
-        
 
+        # Fehlernachricht (wird bei Login-Fehlern angezeigt)
+        self.error_message = page.locator('[data-test="error"]')
+
+    # ==========================================
+    # Navigation
+    # ==========================================
     def navigate(self):
-        # Navigation zur Login-Seite von SauceDemo
+        # Öffnet die Login-Seite der Anwendung
         self.page.goto("https://www.saucedemo.com/")
-    
-        # ================================
-        #  Aktion
-        # ================================
-       
 
+    # ==========================================
+    # Aktionen (User Interactions)
+    # ==========================================
     def login(self, username: str, password: str):
-       # Aktion: Benutzer meldet sich an
-        
-       # Benutzername in das Eingabefeld eintragen
+        # Benutzername eingeben
         self.username_input.fill(username)
-       # Passwort in das Eingabefeld eintragen
-        self.password_input.fill(password)
-       # Klick auf den Login-Button
-        self.login_button.click()
-        
-        
-    def wait_until_loaded(self):
-       # Warten bis die Zielseite (Inventory) geladen ist
-       # Dies stellt sicher, dass der Login-Prozess abgeschlossen ist
-        self.page.wait_for_url("**/inventory.html")
-    
-       # ================================
-       # Verhalten / Erwartung (Expected Behavior)
-       # ================================
 
-    def is_loaded(self):
-       # Prüft, ob die aktuelle URL auf die Inventory-Seite endet
-       # → bedeutet: Login war erfolgreich
+        # Passwort eingeben
+        self.password_input.fill(password)
+
+        # Login-Button klicken
+        self.login_button.click()
+
+    # ==========================================
+    # Positive Validierung
+    # ==========================================
+    def is_logged_in(self):
+        # Prüft, ob der Login erfolgreich war
+        # Erfolg = Weiterleitung auf Inventory-Seite
         return self.page.url.endswith("inventory.html")
-    
-    
-   
+
+    def wait_until_loaded(self):
+        # Wartet bis die Inventory-Seite geladen ist
+        self.page.wait_for_url("**/inventory.html")
+
+    # ==========================================
+    # Negative Validierung (Fehlerfälle)
+    # ==========================================
+    def is_error_visible(self):
+        # Prüft, ob eine Fehlermeldung sichtbar ist
+        return self.error_message.is_visible()
+
+    def get_error_message(self):
+        # Gibt den Text der Fehlermeldung zurück
+        return self.error_message.text_content()
+
+    def wait_for_error(self):
+        # Wartet, bis die Fehlermeldung erscheint
+        self.error_message.wait_for(state="visible")
